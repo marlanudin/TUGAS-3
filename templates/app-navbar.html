@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+
+        <!-- Logo SITTA UT -->
+        <a
+            class="navbar-brand"
+            href="#"
+            @click.prevent="$emit('navigate', 'dashboard')"
+        >
+            <img
+                src="assets/img/logo.png"
+                alt="Logo SITTA UT"
+                class="navbar-logo"
+            >
+        </a>
+
+        <!-- Tombol Menu Mobile -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navmenu"
+            aria-controls="navmenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu Navigasi -->
+        <div class="collapse navbar-collapse" id="navmenu">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a
+                        href="#"
+                        class="nav-link"
+                        :class="{ active: tab === 'dashboard' }"
+                        @click.prevent="$emit('navigate', 'dashboard')"
+                    >
+                        Beranda
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a
+                        href="#"
+                        class="nav-link"
+                        :class="{ active: tab === 'stok' }"
+                        @click.prevent="$emit('navigate', 'stok')"
+                    >
+                        Informasi Stok Bahan Ajar
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a
+                        href="#"
+                        class="nav-link"
+                        :class="{ active: tab === 'tracking' }"
+                        @click.prevent="$emit('navigate', 'tracking')"
+                    >
+                        Tracking Delivery Order
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a
+                        href="#"
+                        class="nav-link"
+                        :class="{ active: tab === 'order' }"
+                        @click.prevent="$emit('navigate', 'order')"
+                    >
+                        Pemesanan Bahan Ajar
+                    </a>
+                </li>
+
+                <!-- Tombol Logout -->
+                <li class="nav-item logout-container">
+                    <button
+                        type="button"
+                        class="btn btn-logout"
+                        @click="$emit('logout')"
+                    >
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</nav>

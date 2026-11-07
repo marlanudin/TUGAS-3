@@ -1,0 +1,387 @@
+<main class="vue-task">
+
+    <!-- Filter dan Pencarian Stok -->
+    <section class="vue-panel">
+        <h2 class="h5 mb-3">Filter dan Pencarian Stok</h2>
+
+        <div class="vue-grid">
+
+            <!-- Filter UT-Daerah -->
+            <div class="vue-field">
+                <label>UT-Daerah</label>
+
+                <select v-model="filterUPBJJ">
+                    <option value="">Semua UT-Daerah</option>
+
+                    <option
+                        v-for="d in upbjjList"
+                        :key="d"
+                    >
+                        {{ d }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Filter Kategori Mata Kuliah -->
+            <div
+                class="vue-field"
+                v-show="filterUPBJJ"
+            >
+                <label>Kategori Mata Kuliah</label>
+
+                <select v-model="filterKategori">
+                    <option value="">Semua kategori</option>
+
+                    <option
+                        v-for="k in kategoriTersedia"
+                        :key="k"
+                    >
+                        {{ k }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Filter Kondisi Stok -->
+            <div class="vue-field">
+                <label>Kondisi Stok</label>
+
+                <select v-model="filterStok">
+                    <option value="semua">Semua stok</option>
+                    <option value="menipis">Menipis</option>
+                    <option value="kosong">Kosong</option>
+                    <option value="reorder">Perlu re-order</option>
+                </select>
+            </div>
+
+            <!-- Pengurutan Data -->
+            <div class="vue-field">
+                <label>Urutkan</label>
+
+                <select v-model="urutkan">
+                    <option value="judul-asc">Judul A-Z</option>
+                    <option value="stok-asc">Stok terkecil</option>
+                    <option value="stok-desc">Stok terbesar</option>
+                    <option value="harga-asc">Harga termurah</option>
+                    <option value="harga-desc">Harga termahal</option>
+                </select>
+            </div>
+
+            <!-- Pencarian Bahan Ajar -->
+            <div class="vue-field">
+                <label>Pencarian</label>
+
+                <input
+                    v-model.trim="kataKunci"
+                    @keyup.enter="kataKunci = $event.target.value"
+                    placeholder="Kode, judul, atau lokasi rak"
+                >
+            </div>
+
+        </div>
+
+        <!-- Tombol Reset dan Informasi Stok -->
+        <div class="vue-actions">
+            <button
+                class="vue-btn secondary"
+                type="button"
+                @click="resetFilter"
+            >
+                Reset Filter
+            </button>
+
+            <span class="vue-note">
+                Kosong: {{ jumlahKosong }} |
+                Menipis: {{ jumlahMenipis }}
+            </span>
+        </div>
+    </section>
+
+    <!-- Pesan Informasi -->
+    <div
+        v-if="pesan"
+        class="alert"
+        :class="jenisPesan === 'error' ? 'alert-danger' : 'alert-info'"
+        role="status"
+    >
+        {{ pesan }}
+    </div>
+
+    <!-- Daftar Stok Bahan Ajar -->
+    <section class="vue-panel">
+
+        <div class="section-heading">
+            <h2 class="h5 mb-3">Daftar Stok Bahan Ajar</h2>
+            <span>{{ bahanAjarTerfilter.length }} data</span>
+        </div>
+
+        <div class="vue-table-wrap">
+            <table class="vue-table">
+
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Kode</th>
+                        <th>Judul</th>
+                        <th>Kategori</th>
+                        <th>UT-Daerah</th>
+                        <th>Lokasi Rak</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Safety</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr
+                        v-for="(item, index) in bahanAjarTerfilter"
+                        :key="item.kode"
+                    >
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ item.kode }}</td>
+                        <td>{{ item.judul }}</td>
+                        <td>{{ item.kategori }}</td>
+                        <td>{{ item.upbjj }}</td>
+                        <td>{{ item.lokasiRak }}</td>
+                        <td>{{ item.harga | rupiah }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td>{{ item.safety }}</td>
+
+                        <!-- Status Stok -->
+                        <td>
+                            <status-badge
+                                :item="item"
+                                :catatan="teksCatatan(item.catatanHTML)"
+                            ></status-badge>
+                        </td>
+
+                        <!-- Tombol Aksi -->
+                        <td>
+                            <button
+                                class="table-action"
+                                @click="mulaiEdit(item)"
+                                title="Edit"
+                            >
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+
+                            <button
+                                class="table-action"
+                                @click="ubahStokCepat(item)"
+                                title="Ubah stok"
+                            >
+                                <i class="bi bi-box"></i>
+                            </button>
+
+                            <button
+                                class="table-action danger"
+                                @click="hapusBahanAjar(item)"
+                                title="Hapus"
+                            >
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Pesan Jika Data Tidak Ditemukan -->
+                    <tr v-if="!bahanAjarTerfilter.length">
+                        <td
+                            colspan="11"
+                            class="text-center"
+                        >
+                            Tidak ada data yang sesuai.
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </section>
+
+    <!-- Form Tambah dan Edit Bahan Ajar -->
+    <section class="vue-panel">
+
+        <h2 class="h5 mb-3">
+            {{ formEdit
+                ? 'Perbarui Data Bahan Ajar'
+                : 'Tambah Bahan Ajar Baru'
+            }}
+        </h2>
+
+        <form @submit.prevent="tambahBahanAjar">
+
+            <div class="vue-grid">
+
+                <!-- Kode Mata Kuliah -->
+                <div class="vue-field">
+                    <label>Kode Mata Kuliah</label>
+
+                    <input
+                        v-model.trim="form.kode"
+                        required
+                        maxlength="20"
+                        placeholder="Contoh: MSIM4401"
+                    >
+                </div>
+
+                <!-- Judul Mata Kuliah -->
+                <div class="vue-field">
+                    <label>Judul Mata Kuliah</label>
+
+                    <input
+                        v-model.trim="form.judul"
+                        required
+                        placeholder="Nama bahan ajar"
+                    >
+                </div>
+
+                <!-- Kategori -->
+                <div class="vue-field">
+                    <label>Kategori</label>
+
+                    <select
+                        v-model="form.kategori"
+                        required
+                    >
+                        <option disabled value="">
+                            Pilih kategori
+                        </option>
+
+                        <option
+                            v-for="k in kategoriList"
+                            :key="k"
+                        >
+                            {{ k }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- UT-Daerah -->
+                <div class="vue-field">
+                    <label>UT-Daerah</label>
+
+                    <select
+                        v-model="form.upbjj"
+                        required
+                    >
+                        <option disabled value="">
+                            Pilih UT-Daerah
+                        </option>
+
+                        <option
+                            v-for="d in upbjjList"
+                            :key="d"
+                        >
+                            {{ d }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Lokasi Rak -->
+                <div class="vue-field">
+                    <label>Lokasi Rak</label>
+
+                    <input
+                        v-model.trim="form.lokasiRak"
+                        required
+                        placeholder="Contoh: R4-C2"
+                    >
+                </div>
+
+                <!-- Jumlah Stok -->
+                <div class="vue-field">
+                    <label>Jumlah Stok</label>
+
+                    <input
+                        type="number"
+                        min="0"
+                        step="1"
+                        v-model.number="form.qty"
+                        required
+                    >
+                </div>
+
+                <!-- Safety Stok -->
+                <div class="vue-field">
+                    <label>Safety Stok</label>
+
+                    <input
+                        type="number"
+                        min="0"
+                        step="1"
+                        v-model.number="form.safety"
+                        required
+                    >
+                </div>
+
+                <!-- Harga -->
+                <div class="vue-field">
+                    <label>Harga (Rp)</label>
+
+                    <input
+                        type="number"
+                        min="0"
+                        v-model.number="form.harga"
+                        required
+                    >
+                </div>
+
+                <!-- Catatan -->
+                <div class="vue-field">
+                    <label>Catatan</label>
+
+                    <textarea
+                        v-model.trim="form.catatanHTML"
+                        placeholder="Catatan tambahan"
+                    ></textarea>
+                </div>
+
+            </div>
+
+            <!-- Pesan Validasi -->
+            <div
+                v-if="errors.length"
+                class="alert alert-danger"
+            >
+                <ul>
+                    <li
+                        v-for="e in errors"
+                        :key="e"
+                    >
+                        {{ e }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tombol Form -->
+            <div class="vue-actions">
+
+                <button
+                    class="vue-btn"
+                    type="submit"
+                >
+                    {{ formEdit ? 'Simpan Perubahan' : 'Tambah Data' }}
+                </button>
+
+                <button
+                    class="vue-btn secondary"
+                    type="button"
+                    @click="bersihkanForm"
+                >
+                    Bersihkan Form
+                </button>
+
+                <span
+                    v-if="formEdit"
+                    class="vue-note"
+                >
+                    Sedang mengedit {{ formEdit.kode }}.
+                </span>
+
+            </div>
+
+        </form>
+    </section>
+
+</main>

@@ -1,0 +1,140 @@
+<main class="vue-task">
+
+    <!-- Formulir Pemesanan Bahan Ajar -->
+    <section class="tracking-card">
+        <h2 class="h5">Formulir Pemesanan Bahan Ajar</h2>
+
+        <p>
+            Silakan pilih paket bahan ajar dan lengkapi identitas pemesan.
+        </p>
+
+        <form @submit.prevent="buatPesanan">
+
+            <div class="vue-grid">
+
+                <!-- NIM Pemesan -->
+                <div class="vue-field">
+                    <label>NIM</label>
+                    <input
+                        v-model.trim="form.nim"
+                        required
+                    >
+                </div>
+
+                <!-- Nama Pemesan -->
+                <div class="vue-field">
+                    <label>Nama Pemesan</label>
+                    <input
+                        v-model.trim="form.nama"
+                        required
+                    >
+                </div>
+
+                <!-- Pilihan Paket -->
+                <div class="vue-field">
+                    <label>Paket Bahan Ajar</label>
+
+                    <select
+                        v-model="form.kodePaket"
+                        required
+                    >
+                        <option value="">Pilih paket</option>
+
+                        <option
+                            v-for="p in paketList"
+                            :key="p.kode"
+                            :value="p.kode"
+                        >
+                            {{ p.kode }} - {{ p.nama }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Total Harga -->
+                <div class="vue-field">
+                    <label>Total Harga</label>
+
+                    <input
+                        :value="formatRupiah(paketDipilih ? paketDipilih.harga : 0)"
+                        readonly
+                    >
+                </div>
+
+            </div>
+
+            <!-- Detail Paket Bahan Ajar -->
+            <div
+                v-if="paketDipilih"
+                class="package-detail"
+            >
+                <strong>{{ paketDipilih.nama }}</strong>
+
+                <ul>
+                    <li
+                        v-for="kode in paketDipilih.isi"
+                        :key="kode"
+                    >
+                        {{ kode }} - {{ judulBahan(kode) }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tombol Buat Pesanan -->
+            <button
+                class="vue-btn"
+                type="submit"
+            >
+                Buat Pesanan
+            </button>
+
+        </form>
+    </section>
+
+    <!-- Daftar Pesanan -->
+    <section class="tracking-card mt-4">
+        <h2 class="h5">Daftar Pesanan</h2>
+
+        <div class="vue-table-wrap">
+            <table class="vue-table">
+
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>NIM</th>
+                        <th>Nama</th>
+                        <th>Paket</th>
+                        <th>Total</th>
+                        <th>Tanggal</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr
+                        v-for="(p, i) in daftarPesanan"
+                        :key="p.nomor"
+                    >
+                        <td>{{ p.nomor }}</td>
+                        <td>{{ p.nim }}</td>
+                        <td>{{ p.nama }}</td>
+                        <td>{{ p.paket }}</td>
+                        <td>{{ formatRupiah(p.total) }}</td>
+                        <td>{{ p.tanggal }}</td>
+                        <td>{{ p.status }}</td>
+                    </tr>
+
+                    <tr v-if="!daftarPesanan.length">
+                        <td
+                            colspan="7"
+                            class="text-center"
+                        >
+                            Belum ada pesanan.
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </section>
+
+</main>

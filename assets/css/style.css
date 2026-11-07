@@ -1,0 +1,1549 @@
+
+/* =========================================================
+   1. RESET DAN PENGATURAN GLOBAL
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    padding-top: 70px;
+    background: #f5f6f8;
+    color: #333333;
+    font-family: 'Inter', sans-serif;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+body.page-exit {
+    opacity: 0;
+}
+
+
+/* =========================================================
+   2. HALAMAN LOGIN
+   ========================================================= */
+
+body.login-page {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: #f5f6f8;
+}
+
+.login-page #app {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 48px);
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 32px 30px 28px;
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 5px 24px rgba(0, 0, 0, 0.14);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.logo-container img {
+    display: block;
+    width: min(230px, 85%);
+    height: auto;
+    object-fit: contain;
+}
+
+.login-container h2 {
+    margin: 0 0 8px;
+    color: #333333;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.login-container > p {
+    margin: 0 0 30px;
+    color: #555555;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.login-container form {
+    width: 100%;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    margin-bottom: 22px;
+    border-bottom: 2px solid #c9cdd0;
+}
+
+.input-box .icon {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 20px;
+    color: #8d969c;
+    font-size: 16px;
+    transform: translateY(-50%);
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    padding: 0 36px 0 32px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #555555;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 32px;
+    padding: 0 4px;
+    background: #ffffff;
+    color: #92989d;
+    font-size: 12px;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: 0.2s ease;
+}
+
+.input-box input:focus + label,
+.input-box input:not(:placeholder-shown) + label {
+    top: 0;
+    color: #d5ae00;
+    font-size: 10px;
+    transform: translateY(-50%);
+}
+
+.input-box:focus-within {
+    border-bottom-color: #f5d216;
+}
+
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    z-index: 2;
+    color: #8d969c;
+    font-size: 14px;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: -5px 0 22px;
+}
+
+#forgetLink,
+.form-options a {
+    color: #555555;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+#forgetLink:hover,
+.form-options a:hover {
+    color: #d5ae00;
+    text-decoration: underline;
+}
+
+.show-password {
+    display: none;
+}
+
+.show-password input {
+    width: 12px;
+    height: 12px;
+}
+
+.tombol-login {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 5px;
+    background: #f5d216;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.tombol-login:hover {
+    background: #e5b936;
+}
+
+.tombol-login:active {
+    transform: scale(0.98);
+}
+
+.links {
+    margin-top: 18px;
+    color: #555555;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.links span {
+    color: #555555;
+    font-size: inherit;
+}
+
+#registerLink,
+.links a {
+    color: #d5ae00;
+    font-size: inherit;
+    text-decoration: none;
+}
+
+#registerLink:hover,
+.links a:hover {
+    color: #333333;
+    text-decoration: underline;
+}
+
+.login-container .login-hint {
+    margin: 14px 0 0;
+    color: #777777;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+
+/* =========================================================
+   3. POPUP LOGIN DAN NOTIFIKASI
+   ========================================================= */
+
+.custom-popup,
+.login-popup {
+    width: min(350px, 90vw);
+    padding: 20px 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+}
+
+.custom-popup-title {
+    margin-top: 10px;
+    color: #333333;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.custom-popup-text {
+    color: #333333;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.custom-popup .swal2-icon.swal2-info {
+    color: #f5d216;
+    border-color: #f5d216;
+}
+
+.custom-popup-button,
+.login-confirm {
+    min-width: 100px;
+    padding: 9px 22px;
+    border: 0;
+    border-radius: 7px;
+    background: #f5d216;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.custom-popup-button:hover,
+.login-confirm:hover {
+    background: #e0bf0f;
+}
+
+.custom-popup-button:active,
+.login-confirm:active {
+    transform: scale(0.97);
+}
+
+.login-title {
+    color: #333333;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.login-text {
+    color: #333333;
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   4. NAVBAR
+   ========================================================= */
+
+.navbar {
+    min-height: 56px;
+    background: #f5d216;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.20);
+}
+
+.navbar .container-fluid {
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.navbar-brand {
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.navbar-logo {
+    display: block;
+    width: auto;
+    height: 70px;
+    object-fit: contain;
+}
+
+#navmenu {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.navbar-nav {
+    gap: 10px;
+    margin-left: 0;
+}
+
+.nav-link {
+    position: relative;
+    color: #ffffff;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover,
+.navbar .nav-link.active {
+    color: #333333;
+}
+
+.navbar .nav-link.active::after {
+    position: absolute;
+    right: 8px;
+    bottom: 2px;
+    width: 40%;
+    height: 2px;
+    border-radius: 3px;
+    background: #333333;
+    content: "";
+}
+
+.navbar-toggler {
+    border: 2px solid #333333;
+    border-radius: 10px;
+}
+
+.navbar-toggler-icon {
+    filter: brightness(0);
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active {
+    border-color: #333333;
+    box-shadow: none;
+}
+
+.dropdown-menu {
+    border: 0;
+    border-radius: 10px;
+    background: #333333;
+}
+
+.dropdown-item {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.dropdown-item:hover {
+    background: #333333;
+    color: #f5d216;
+}
+
+.navbar .dropdown-toggle:hover,
+.navbar .dropdown-toggle:focus,
+.navbar .dropdown-toggle:active,
+.navbar .dropdown-toggle.show {
+    color: #333333;
+}
+
+#navmenu.collapsing {
+    transition: height 0.4s ease-in-out;
+}
+
+/* Tombol logout */
+.btn-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0 10px 0 5px;
+    padding: 6px 12px;
+    border: 2px solid #1f2937;
+    border-radius: 6px;
+    background: transparent;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-logout i {
+    font-size: 15px;
+    -webkit-text-stroke: 0.1px;
+}
+
+.btn-logout:hover,
+.btn-logout:active {
+    background: #1f2937;
+    color: #ffffff;
+}
+
+.btn-logout:active {
+    background: #111827;
+}
+
+
+/* =========================================================
+   5. DASHBOARD
+   ========================================================= */
+
+.dashboard {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+}
+
+.greeting-box {
+    width: 100%;
+    padding: 10px 30px;
+    text-align: left;
+}
+
+#greeting,
+.greeting-box h2 {
+    margin: 0;
+    color: #333333;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.greeting-box p {
+    margin: 5px 0 0;
+    color: #333333;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.dashboard-shortcuts {
+    margin-top: 38px;
+}
+
+.dashboard .dashboard-shortcuts {
+    margin-top: 20px;
+}
+
+.shortcut-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.shortcut-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 22px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #ffffff;
+    color: #333333;
+    text-align: left;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+
+.shortcut-card i {
+    color: #174ea6;
+    font-size: 27px;
+}
+
+.shortcut-card strong {
+    font-size: 16px;
+}
+
+.shortcut-card span {
+    color: #667085;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   6. CONTAINER DAN KOMPONEN UMUM
+   ========================================================= */
+
+/* Container utama untuk halaman stok dan tracking */
+.vue-task {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 25px 60px;
+    color: #333333;
+    box-sizing: border-box;
+}
+
+/* Container alternatif jika masih digunakan pada template */
+.tracking-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 35px 25px 60px;
+    color: #333333;
+    box-sizing: border-box;
+}
+
+/* Panel utama halaman stok dan tracking */
+.vue-panel,
+.tracking-card {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 0 0 24px;
+    padding: 28px;
+    border: 1px solid #edf0ee;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+}
+
+/* Judul panel */
+.vue-panel h2,
+.tracking-card h2 {
+    color: #333333;
+    font-weight: 700;
+}
+
+.vue-panel > h2,
+.tracking-card h2 {
+    margin-bottom: 22px;
+    font-size: 22px;
+}
+
+/* Grid form umum */
+.vue-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: start;
+    gap: 18px 20px;
+}
+
+/* Grid khusus halaman tracking */
+body.tracking-page .vue-task .vue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Elemen form */
+.vue-field {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.vue-field label {
+    margin: 0;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.vue-field input,
+.vue-field select,
+.vue-field textarea {
+    width: 100%;
+    min-height: 45px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vue-field input:focus,
+.vue-field select:focus,
+.vue-field textarea:focus {
+    border-color: #f5d216;
+    box-shadow: 0 0 0 3px rgba(245, 210, 22, 0.15);
+}
+
+.vue-field input::placeholder,
+.vue-field textarea::placeholder {
+    color: #9ca3af;
+}
+
+.vue-field textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.vue-field input[readonly] {
+    background: #f5f6f8;
+    color: #555555;
+    cursor: default;
+}
+
+/* Keterangan tambahan */
+.vue-note {
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Notifikasi dalam halaman */
+.vue-alert {
+    margin-top: 16px;
+    padding: 13px 15px;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1e40af;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Kelompok tombol */
+.vue-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+/* Tombol utama */
+.vue-btn {
+    padding: 10px 18px;
+    border: 0;
+    margin-top: 10px;
+    border-radius: 8px;
+    background: #f5d216;
+    color: #333333;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.vue-btn:hover {
+    background: #e0bf0f;
+}
+
+.vue-btn:active {
+    transform: scale(0.98);
+}
+
+.vue-btn.secondary {
+    background: #eef0f3;
+    color: #333333;
+}
+
+.vue-btn.secondary:hover {
+    background: #dadcdd;
+}
+
+.vue-btn:focus-visible {
+    outline: 3px solid rgba(245, 210, 22, 0.5);
+    outline-offset: 2px;
+}
+
+/* Baris pencarian DO */
+.search-do {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.search-do .vue-field {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Kelompok tombol */
+.search-do .button-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0;
+    flex-wrap: nowrap;
+}
+
+/* Ukuran tombol disamakan dengan input */
+.search-do .button-group .vue-btn {
+    width: auto;
+    min-height: 45px;
+    padding: 10px 30px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+/* Informasi paket yang dipilih */
+.package-detail {
+    margin: 18px 0;
+    padding: 15px;
+    border-left: 4px solid #f5d216;
+    border-radius: 8px;
+    background: #f7f8fa;
+}
+
+.package-detail p {
+    margin: 8px 0 4px;
+}
+
+.package-detail ul {
+    padding-left: 22px;
+}
+
+/* Tampilan loading dan error aplikasi */
+.app-loading,
+.app-error {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 24px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #333333;
+    text-align: center;
+}
+
+
+/* =========================================================
+   7. HALAMAN INFORMASI STOK BAHAN AJAR
+   ========================================================= */
+
+.stock-page {
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 80px;
+    background: #f5f7f5;
+    color: #333333;
+    font-family: 'Inter', sans-serif;
+}
+
+.stock-title {
+    margin: 0;
+    padding: 35px 15px 25px;
+    color: #333333;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Judul dan keterangan bagian tabel */
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.section-heading span {
+    color: #667085;
+    font-size: 13px;
+}
+
+/* Pembungkus tabel agar dapat digeser horizontal */
+.vue-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Tabel umum */
+.vue-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.vue-table th,
+.vue-table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #edf0ee;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.vue-table thead th {
+    background: #eef0f3;
+    color: #333333;
+    font-weight: 700;
+    text-align: center !important;
+    vertical-align: middle !important;
+    white-space: nowrap;
+}
+
+.vue-table tbody td {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.vue-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.vue-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Penyesuaian kolom tabel stok */
+.stock-page-content .vue-table {
+    min-width: 1100px;
+}
+
+.stock-page-content .vue-table tbody td:first-child {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.stock-page-content .vue-table tbody td:nth-child(2) {
+    min-width: 170px;
+}
+
+.stock-page-content .vue-table tbody td:nth-child(10) {
+    min-width: 180px;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.stock-page-content .vue-table th:nth-child(9),
+.stock-page-content .vue-table td:nth-child(9) {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.stock-page-content .vue-table th:last-child,
+.stock-page-content .vue-table td:last-child {
+    min-width: 100px;
+    text-align: center;
+}
+
+.stock-page-content .vue-table tbody td:last-child .vue-btn {
+    display: block;
+    width: 100%;
+    min-width: 85px;
+    margin: 0 auto 8px;
+    white-space: nowrap;
+}
+
+.stock-page-content .vue-table tbody td:last-child .vue-btn:last-child {
+    margin-bottom: 0;
+}
+
+/* Badge status stok */
+.vue-status,
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.status-safe {
+    background: #e7f6ec;
+    color: #16803c;
+}
+
+.status-low {
+    background: #fff1dc;
+    color: #b86b00;
+}
+
+.status-empty {
+    background: #fde8e8;
+    color: #c62828;
+}
+
+/* Tombol aksi tabel stok */
+.table-action {
+    margin: 2px;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 6px;
+    background: #eef3ff;
+    color: #174ea6;
+    cursor: pointer;
+}
+
+.table-action.danger {
+    background: #fff0f0;
+    color: #c62828;
+}
+
+
+/* =========================================================
+   8. POPUP SWEETALERT HALAMAN STOK
+   ========================================================= */
+
+.stock-popup {
+    width: min(350px, 90vw);
+    padding: 20px 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+    font-family: 'Inter', sans-serif;
+}
+
+.stock-popup-title {
+    margin-top: 10px;
+    color: #333333;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.stock-popup-text {
+    color: #333333;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.stock-popup .swal2-icon.swal2-info {
+    color: #f5d216;
+    border-color: #f5d216;
+}
+
+.stock-popup-button {
+    min-width: 100px;
+    padding: 9px 22px;
+    border: 0;
+    border-radius: 7px;
+    background: #f5d216;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.stock-popup-button:hover {
+    background: #e0bf0f;
+}
+
+.stock-popup-button:active {
+    transform: scale(0.97);
+}
+
+.stock-popup-cancel {
+    min-width: 100px;
+    padding: 9px 22px;
+    border: 0;
+    border-radius: 7px;
+    background: #eef0f3;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.stock-popup-input {
+    border-radius: 8px !important;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Jarak antartombol SweetAlert */
+.stock-popup .swal2-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.stock-popup .swal2-actions .swal2-styled {
+    margin: 0;
+}
+
+
+/* =========================================================
+   9. HALAMAN TRACKING DELIVERY ORDER DAN PEMESANAN
+   ========================================================= */
+
+.tracking-page {
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 80px;
+    background: #f5f7f5;
+    color: #333333;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Judul halaman jika menggunakan tracking-container */
+.tracking-container > h2,
+.tracking-container > h1 {
+    margin: 0 0 25px;
+    color: #333333;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.tracking-container > h1 {
+    font-size: 28px;
+}
+
+/* Grid tracking jika menggunakan tracking-container */
+.tracking-container .vue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 20px;
+}
+
+.tracking-container .vue-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.tracking-container .vue-field label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tracking-container .vue-field input,
+.tracking-container .vue-field select,
+.tracking-container .vue-field textarea {
+    width: 100%;
+    min-height: 45px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+}
+
+.tracking-container .vue-field input:focus,
+.tracking-container .vue-field select:focus,
+.tracking-container .vue-field textarea:focus {
+    border-color: #f5d216;
+    box-shadow: 0 0 0 3px rgba(245, 210, 22, 0.15);
+}
+
+.tracking-container .vue-field input[readonly] {
+    background: #f5f6f8;
+    color: #555555;
+}
+
+.tracking-container .vue-note {
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.tracking-container .vue-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+/* Tabel tracking */
+.tracking-container .vue-table {
+    min-width: 750px;
+}
+
+.tracking-container .vue-table th,
+.tracking-container .vue-table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #edf0ee;
+    text-align: left;
+    vertical-align: top;
+}
+
+.tracking-container .vue-table th {
+    background: #eef0f3;
+    color: #333333;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.tracking-container .vue-table td {
+    color: #333333;
+    line-height: 1.6;
+}
+
+.tracking-container .tracking-card {
+    margin-bottom: 24px;
+}
+
+.tracking-container .tracking-card h2 {
+    margin-bottom: 22px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Tabel tracking ketika menggunakan body tracking-page */
+body.tracking-page .vue-table {
+    min-width: 750px;
+}
+
+body.tracking-page .vue-table th,
+body.tracking-page .vue-table td {
+    text-align: left;
+    vertical-align: top;
+}
+
+/* Riwayat perjalanan delivery order */
+.progress-list {
+    margin: 12px 0 20px;
+    padding-left: 18px;
+    border-left: 2px solid #f5d216;
+}
+
+.progress-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0 0 15px;
+}
+
+.progress-item::before {
+    position: absolute;
+    top: 4px;
+    left: -24px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #f5d216;
+    content: "";
+}
+
+/* Ringkasan delivery order */
+.do-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 14px 0 22px;
+}
+
+.do-summary > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #f7f8fa;
+}
+
+.do-summary small {
+    color: #667085;
+    font-size: 12px;
+}
+
+.do-summary strong {
+    color: #174ea6;
+    font-size: 22px;
+}
+
+#progres-container {
+    scroll-margin-top: 110px;
+}
+
+
+/* =========================================================
+   10. POPUP TRACKING
+   ========================================================= */
+
+.tracking-popup {
+    width: 420px;
+    max-width: calc(100% - 32px);
+    padding: 28px;
+    border: 1px solid #eeeeee;
+    border-radius: 18px;
+    background: #ffffff;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.tracking-popup-title {
+    margin: 14px 0 10px;
+    color: #333333;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.tracking-popup-text {
+    color: #666666;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.tracking-popup-button,
+.tracking-popup-cancel {
+    min-width: 100px;
+    margin: 8px 5px 0;
+    padding: 11px 22px;
+    border: 0;
+    border-radius: 9px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.tracking-popup-button {
+    min-width: 110px;
+    background: #f5d216;
+    color: #333333;
+}
+
+.tracking-popup-button:hover {
+    background: #e5c000;
+    transform: translateY(-1px);
+}
+
+.tracking-popup-cancel {
+    background: #eeeeee;
+    color: #444444;
+}
+
+.tracking-popup-cancel:hover {
+    background: #dddddd;
+}
+
+.tracking-popup-input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #d5d5d5;
+    border-radius: 9px;
+    color: #333333;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+}
+
+.tracking-popup-input:focus {
+    border-color: #e5c000;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(245, 210, 22, 0.2);
+}
+
+.tracking-popup-detail {
+    margin-top: 8px;
+}
+
+.tracking-popup-detail p {
+    margin-bottom: 12px;
+}
+
+.tracking-popup-number {
+    margin: 16px 0;
+    padding: 14px;
+    border: 1px dashed #e5c000;
+    border-radius: 10px;
+    background: #fffbea;
+    color: #333333;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.tracking-popup-caption {
+    color: #888888;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   11. RESPONSIVE TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .vue-task {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .stock-page-content .vue-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .shortcut-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   12. RESPONSIVE NAVBAR
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .navbar .nav-link {
+        position: relative;
+        display: inline-block;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .navbar .nav-link.active::after {
+        right: auto;
+        bottom: 2px;
+        left: 1px;
+        width: 40%;
+    }
+}
+
+
+/* =========================================================
+   13. RESPONSIVE MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    /* Container halaman */
+    .vue-task {
+        width: 100%;
+        max-width: 1400px;
+        padding: 5px 15px 45px;
+    }
+
+    .tracking-container {
+        padding: 25px 15px 45px;
+    }
+
+    /* Judul halaman stok */
+    .stock-page {
+        padding-top: 75px;
+    }
+
+    .stock-title {
+        margin: 28px 12px 20px;
+        padding: 0 10px;
+        font-size: 25px;
+    }
+
+    /* Panel stok dan tracking */
+    .vue-panel,
+    .tracking-card {
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    /* Judul panel */
+    .vue-panel > h2,
+    .tracking-card h2,
+    .tracking-container .tracking-card h2 {
+        margin-bottom: 18px;
+        font-size: 19px;
+    }
+
+    /* Grid halaman stok dan tracking */
+    .stock-page-content .vue-grid,
+    body.tracking-page .vue-task .vue-grid,
+    .tracking-container .vue-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 15px;
+    }
+
+    /* Tombol aksi */
+    .vue-actions,
+    .tracking-container .vue-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .vue-actions .vue-btn,
+    .tracking-container .vue-actions .vue-btn {
+        width: 100%;
+    }
+
+    .vue-actions .vue-note,
+    .tracking-container .vue-actions .vue-note {
+        align-self: flex-start;
+    }
+
+    /* Tabel stok */
+    .stock-page-content .vue-table {
+        min-width: 1100px;
+    }
+
+    /* Tabel tracking */
+    .tracking-container .vue-table,
+    body.tracking-page .vue-table {
+        min-width: 750px;
+    }
+
+    /* Sel tabel */
+    .vue-table th,
+    .vue-table td {
+        padding: 10px;
+    }
+
+    /* Halaman tracking */
+    .tracking-page {
+        padding-top: 75px;
+    }
+
+    .tracking-container > h1,
+    .tracking-container > h2 {
+        margin-bottom: 20px;
+        font-size: 25px;
+    }
+
+    .tracking-container .tracking-card {
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .tracking-container .vue-grid {
+        gap: 15px;
+    }
+
+    /* Ringkasan delivery order */
+    .do-summary {
+        grid-template-columns: 1fr;
+    }
+
+    /* Dashboard */
+    .shortcut-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   14. RESPONSIVE LAYAR KECIL
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    /* Login */
+    body.login-page {
+        padding: 18px 14px;
+    }
+
+    .login-page #app {
+        min-height: calc(100vh - 36px);
+    }
+
+    .login-container {
+        max-width: 390px;
+        padding: 28px 22px 24px;
+    }
+
+    .login-container h2 {
+        font-size: 23px;
+    }
+
+    .login-container > p {
+        margin-bottom: 26px;
+        font-size: 14px;
+    }
+
+    .logo-container img {
+        width: min(210px, 85%);
+    }
+
+    /* Popup tracking */
+    .tracking-popup {
+        padding: 22px 18px;
+        border-radius: 14px;
+    }
+
+    .tracking-popup-title {
+        font-size: 19px;
+    }
+
+    .tracking-popup-number {
+        font-size: 18px;
+    }
+
+    /* Dashboard */
+    .shortcut-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   15. AKSESIBILITAS DAN PENGATURAN ANIMASI
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

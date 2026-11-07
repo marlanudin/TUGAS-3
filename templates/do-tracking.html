@@ -1,0 +1,284 @@
+<main class="vue-task">
+
+    <!-- Pencarian dan Daftar Delivery Order -->
+    <section class="tracking-card">
+        <h2 class="h5">Tracking Delivery Order</h2>
+
+        <div class="search-do">
+
+            <div class="vue-field">
+                <label>Cari Nomor DO atau NIM</label>
+                <input
+                    v-model.trim="kataKunci"
+                    @keyup.enter="cariDO"
+                    @keyup.esc="kataKunci = ''; selectedDO = null"
+                    placeholder="Masukkan nomor DO atau NIM"
+                >
+            </div>
+
+            <div class="vue-actions button-group">
+                <button
+                    class="vue-btn"
+                    @click="cariDO"
+                >
+                    Cari
+                </button>
+
+                <button
+                    class="vue-btn secondary"
+                    @click="kataKunci = ''; selectedDO = null"
+                >
+                    Reset (Esc)
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Tabel Delivery Order -->
+        <div class="vue-table-wrap mt-3">
+            <table class="vue-table">
+
+                <thead>
+                    <tr>
+                        <th>Nomor DO</th>
+                        <th>NIM</th>
+                        <th>Nama</th>
+                        <th>Ekspedisi</th>
+                        <th>Paket</th>
+                        <th>Tanggal Kirim</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr
+                        v-for="doItem in daftarDOFilter"
+                        :key="doItem.nomorDO"
+                    >
+                        <td>{{ doItem.nomorDO }}</td>
+                        <td>{{ doItem.nim }}</td>
+                        <td>{{ doItem.nama }}</td>
+                        <td>{{ doItem.ekspedisi }}</td>
+                        <td>
+                            {{ doItem.kodePaket }} - {{ doItem.namaPaket }}
+                        </td>
+                        <td>{{ doItem.tanggalKirim | tanggalID }}</td>
+                        <td>{{ doItem.total | rupiah }}</td>
+                        <td>{{ doItem.status }}</td>
+                        <td>
+                            <button
+                                class="vue-btn secondary"
+                                @click="pilihDO(doItem)"
+                            >
+                                Detail
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr v-if="!daftarDOFilter.length">
+                        <td colspan="9" class="text-center">
+                            Data DO tidak ditemukan.
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </section>
+
+    <!-- Form Tambah Delivery Order -->
+    <section class="tracking-card mt-4">
+        <h2 class="h5">Tambah Delivery Order</h2>
+
+        <form @submit.prevent="tambahDO">
+
+            <div class="vue-grid">
+
+                <div class="vue-field">
+                    <label>Nomor DO (otomatis)</label>
+                    <input
+                        :value="nomorDOBaru"
+                        readonly
+                    >
+                </div>
+
+                <div class="vue-field">
+                    <label>NIM</label>
+                    <input
+                        v-model.trim="form.nim"
+                        required
+                    >
+                </div>
+
+                <div class="vue-field">
+                    <label>Nama</label>
+                    <input
+                        v-model.trim="form.nama"
+                        required
+                    >
+                </div>
+
+                <div class="vue-field">
+                    <label>Ekspedisi</label>
+                    <select
+                        v-model="form.ekspedisi"
+                        required
+                    >
+                        <option value="">Pilih ekspedisi</option>
+
+                        <option
+                            v-for="e in ekspedisiList"
+                            :key="e.kode"
+                            :value="e.nama"
+                        >
+                            {{ e.nama }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="vue-field">
+                    <label>Paket Bahan Ajar</label>
+                    <select
+                        v-model="form.kodePaket"
+                        required
+                    >
+                        <option value="">Pilih paket</option>
+
+                        <option
+                            v-for="p in paketList"
+                            :key="p.kode"
+                            :value="p.kode"
+                        >
+                            {{ p.kode }} - {{ p.nama }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="vue-field">
+                    <label>Tanggal Kirim</label>
+                    <input
+                        type="date"
+                        v-model="form.tanggalKirim"
+                        required
+                    >
+                </div>
+
+                <div class="vue-field">
+                    <label>Total Harga</label>
+                    <input
+                        :value="formatRupiah(totalHarga)"
+                        readonly
+                    >
+                </div>
+
+            </div>
+
+            <!-- Detail Paket Bahan Ajar -->
+            <div
+                v-if="paketDipilih"
+                class="package-detail"
+            >
+                <strong>{{ paketDipilih.nama }}</strong>
+
+                <p>Isi paket:</p>
+
+                <ul>
+                    <li
+                        v-for="kode in paketDipilih.isi"
+                        :key="kode"
+                    >
+                        {{ kode }} - {{ judulBahan(kode) }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Pesan Validasi -->
+            <div
+                v-if="errors.length"
+                class="alert alert-danger"
+            >
+                <ul>
+                    <li
+                        v-for="e in errors"
+                        :key="e"
+                    >
+                        {{ e }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tombol Form -->
+            <div class="vue-actions">
+                <button
+                    class="vue-btn"
+                    type="submit"
+                >
+                    Tambah DO
+                </button>
+
+                <button
+                    class="vue-btn secondary"
+                    type="button"
+                    @click="bersihkanForm"
+                >
+                    Bersihkan Form
+                </button>
+            </div>
+
+        </form>
+    </section>
+
+    <!-- Progres Pengiriman -->
+    <section
+        v-if="selectedDO"
+        id="progres-container"
+        class="tracking-card mt-4"
+    >
+        <h2 class="h5">
+            Progres Pengiriman {{ selectedDO.nomorDO }}
+        </h2>
+
+        <div class="progress-list">
+
+            <div
+                v-for="(p, i) in selectedDO.perjalanan"
+                :key="i"
+                class="progress-item"
+            >
+                <strong>{{ p.waktu }}</strong>
+                <span>{{ p.keterangan }}</span>
+            </div>
+
+            <p v-if="!selectedDO.perjalanan.length">
+                Belum ada riwayat perjalanan.
+            </p>
+
+        </div>
+
+        <!-- Form Tambah Progres -->
+        <form @submit.prevent="tambahProgress">
+
+            <div class="vue-grid">
+                <div class="vue-field">
+                    <label>Keterangan Progres Baru</label>
+                    <input
+                        v-model.trim="formProgress.keterangan"
+                        placeholder="Contoh: Paket tiba di kantor tujuan"
+                        required
+                    >
+                </div>
+            </div>
+
+            <button
+                class="vue-btn"
+                type="submit"
+            >
+                Tambah Progres
+            </button>
+
+        </form>
+    </section>
+
+</main>

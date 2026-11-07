@@ -1,0 +1,47 @@
+<main class="dashboard">
+
+    <!-- Kotak Sapaan -->
+    <div class="greeting-box">
+        <h2>{{ sapaan }}, {{ namaUser }}!</h2>
+
+        <p>
+            Selamat datang di Dashboard Sistem Informasi Tiras dan Transaksi
+            Bahan Ajar (SITTA) Universitas Terbuka.
+        </p>
+    </div>
+
+    <!-- Menu Pintasan Dashboard -->
+    <section class="vue-task dashboard-shortcuts">
+        <div class="shortcut-grid">
+
+            <button
+                class="shortcut-card"
+                @click="$emit('navigate', 'stok')"
+            >
+                <i class="bi bi-box-seam"></i>
+                <strong>Informasi Stok</strong>
+                <span>Kelola dan pantau stok bahan ajar</span>
+            </button>
+
+            <button
+                class="shortcut-card"
+                @click="$emit('navigate', 'tracking')"
+            >
+                <i class="bi bi-truck"></i>
+                <strong>Tracking DO</strong>
+                <span>Lihat status pengiriman bahan ajar</span>
+            </button>
+
+            <button
+                class="shortcut-card"
+                @click="$emit('navigate', 'order')"
+            >
+                <i class="bi bi-cart"></i>
+                <strong>Pemesanan</strong>
+                <span>Buat pesanan bahan ajar</span>
+            </button>
+
+        </div>
+    </section>
+
+</main>

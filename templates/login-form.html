@@ -1,0 +1,93 @@
+<div class="login-container">
+
+    <!-- Logo Universitas Terbuka -->
+    <div class="logo-container">
+        <img
+            src="assets/img/logo.png"
+            alt="Logo Universitas Terbuka"
+        >
+    </div>
+
+    <!-- Judul Login -->
+    <h2>Selamat Datang</h2>
+    <p>Silahkan masuk ke akun Anda</p>
+
+    <!-- Form Login -->
+    <form @submit.prevent="$emit('login', form)">
+
+        <!-- Input Email -->
+        <div class="input-box">
+            <span class="icon">
+                <i class="fa-solid fa-envelope"></i>
+            </span>
+
+            <input
+                type="email"
+                v-model.trim="form.email"
+                placeholder=" "
+                required
+            >
+
+            <label>Email</label>
+        </div>
+
+        <!-- Input Password -->
+        <div class="input-box">
+            <span class="icon">
+                <i class="fa-solid fa-key"></i>
+            </span>
+
+            <input
+                :type="lihatPassword ? 'text' : 'password'"
+                v-model="form.password"
+                placeholder=" "
+                required
+            >
+
+            <label>Password</label>
+
+            <!-- Tombol Lihat Password -->
+            <span
+                class="eye-icon"
+                @click="lihatPassword = !lihatPassword"
+            >
+                <i
+                    :class="lihatPassword
+                        ? 'fa-solid fa-eye-slash'
+                        : 'fa-solid fa-eye'"
+                ></i>
+            </span>
+        </div>
+
+        <!-- Lupa Password -->
+        <div class="form-options">
+            <a
+                href="#"
+                @click.prevent="infoLupa"
+            >
+                Lupa password?
+            </a>
+        </div>
+
+        <!-- Tombol Masuk -->
+        <input
+            type="submit"
+            value="Masuk"
+            class="tombol-login"
+        >
+
+    </form>
+
+    <!-- Link Pendaftaran -->
+    <div class="links">
+        <span>Belum punya akun?</span>
+
+        <a
+            href="#"
+            @click.prevent="infoDaftar"
+        >
+            Daftar
+        </a>
+    </div>
+
+</div>
